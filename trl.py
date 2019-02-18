@@ -89,18 +89,52 @@ class Traffic:
         TODO: This is a very easy function, where we choose the largest number Q value in Q matrix and find the best stragegy
         :return:
         '''
-
-        self.best_strategy = np.zeors(4,3)
-
+        self.best_strategy = np.zeros((4,3))
+        tmp=self.Q.tolist() 
+        idm=tmp.index(max(tmp))         
+        '''
+        找到Q里面的最大的值对应的index_max(idm)  （最优策略在第81个strategy中位于第idm个）
+        然后把idm这个index转化成strategy矩阵 self.best_strategy
+        '''
+        cross1=idm//27                                  #cross1表示第1个crossroad选择的相位是第cross1个相位（cross1可能为0，1，2）           
+        cross2=(idm-cross1*27)//9
+        cross3=(idm-cross1*27-cross2*9)//3
+        cross4=idm-cross1*27-cross2*9-cross3*3
+        self.best_strategy[0][cross1]=1
+        self.best_strategy[1][cross2]=1
+        self.best_strategy[2][cross3]=1
+        self.best_strategy[3][cross4]=1
+        return self.best_strategy
+    
     def execute(self):
         '''
         TODO: In this function, we execute the result from the strategy, by changing the value of Z
               Notice that you do not need to mess up with Y.
         :return:
         '''
-
-        self.Z = np.zeros(4, 4)
-
+        self.Z = np.zeros((4, 4))
+        dt=1
+        car_len=3
+        for i in range(4):                                              #对每个crossroad 从左边的entry开始是entry1 1234
+            if self.best_strategy[i][0]==1:
+                '''
+                strategy矩阵的第i行第1列==1 表示第i个crossroad采取 第1种相位  
+                outgoing cars= delta t(1s) * Vij / physical length of a car(3m)
+                '''
+                self.Z[i][1]=dt*self.V[i][0][1]/car_len                 #crossroad i  entry 1 to 2
+                self.Z[i][3]=dt*self.V[i][2][3]/car_len                 #crossroad i  entry 3 to 4
+            if self.best_strategy[i][1]==1:
+                self.Z[i][2]=dt*self.V[i][0][2]/car_len                 #crossroad i  entry 1 to 3
+                self.Z[i][0]=dt*self.V[i][2][0]/car_len                 #crossroad i  entry 3 to 1
+            if self.best_strategy[i][2]==1:
+                self.Z[i][0]=dt*self.V[i][1][0]/car_len                 #crossroad i  entry 2 to 1
+                self.Z[i][2]=dt*self.V[i][1][2]/car_len                 #crossroad i  entry 2 to 3
+                self.Z[i][3]=dt*self.V[i][1][3]/car_len                 #crossroad i  entry 2 to 4
+                self.Z[i][0]=dt*self.V[i][3][0]/car_len                 #crossroad i  entry 4 to 1
+                self.Z[i][1]=dt*self.V[i][3][1]/car_len                 #crossroad i  entry 4 to 2
+                self.Z[i][2]=dt*self.V[i][3][2]/car_len                 #crossroad i  entry 4 to 3
+        return self.Z
+                 
     def update_Y_with_Z(self):
         '''
         In this function we update Y wrt Z
