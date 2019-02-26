@@ -73,8 +73,37 @@ class Traffic:
         TODO In this function, we compute the reward function, based on the current Y
         :return:
         '''
-        self.R = np.zeros(self.NACTIONS)
 
+        for a in range(3): #第一个路口的3个相位
+            for b in range(3):#第二个路口的3个相位
+                for c in range(3):#三一个路口的3个相位
+                    for d in range(3):#第四个路口的3个相位
+                        self.A[0][a] = 1
+                        self.A[1][b] = 1
+                        self.A[2][c] = 1
+                        self.A[3][d] = 1
+                        for i in range(4):                                              #对每个crossroad 从左边的entry开始是entry1 1234
+                            if self.A[i][0]==1:
+                            '''      
+                strategy矩阵的第i行第1列==1 表示第i个crossroad采取 第1种相位  
+                outgoing cars= delta t(1s) * Vij / physical length of a car(3m)
+                '''
+                                self.Z[i][1]=dt*self.V[i][0][1]/car_len                 #crossroad i  entry 1 to 2
+                                self.Z[i][3]=dt*self.V[i][2][3]/car_len                 #crossroad i  entry 3 to 4
+                            if self.A[i][1]==1:
+                                self.Z[i][2]=dt*self.V[i][0][2]/car_len                 #crossroad i  entry 1 to 3
+                                self.Z[i][0]=dt*self.V[i][2][0]/car_len                 #crossroad i  entry 3 to 1
+                            if self.A[i][2]==1:
+                                self.Z[i][0]=dt*self.V[i][1][0]/car_len                 #crossroad i  entry 2 to 1
+                                self.Z[i][2]=dt*self.V[i][1][2]/car_len                 #crossroad i  entry 2 to 3
+                                self.Z[i][3]=dt*self.V[i][1][3]/car_len                 #crossroad i  entry 2 to 4
+                                self.Z[i][0]=dt*self.V[i][3][0]/car_len                 #crossroad i  entry 4 to 1
+                                self.Z[i][1]=dt*self.V[i][3][1]/car_len                 #crossroad i  entry 4 to 2
+                                self.Z[i][2]=dt*self.V[i][3][2]/car_len    
+    
+                        self.R.append(1/np.sum(self.Y-self.Z))
+        return self.R
+    
     def compute_Q(self):
         '''
         TODO In this function we estimate the value of Q matrix, which is a 81 long
