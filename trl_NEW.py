@@ -95,7 +95,7 @@ class Traffic:
         :return: we store the incoming value into self.X
         '''
 
-        self.X = np.random.poisson(self.incomerate * self.multiplier) # Generate randomly with income possibility
+        self.X = np.random.poisson(self.incomerate * self.multiplier*self.dt) # Generate randomly with income possibility
         mask = np.array([[1,1,1,0],
                          [0,1,0,0],
                          [0,1,1,1],
@@ -150,7 +150,7 @@ class Traffic:
         We will use function self.compute_reward() in this function.
         :return:
         '''
-        X_next = np.random.poisson(self.incomerate * self.multiplier) # Randomly initiate some cars in next t
+        X_next = np.random.poisson(self.incomerate * self.multiplier*self.dt) # Randomly initiate some cars in next t
         Y_next = self.Y + X_next
         for i in range(81): # For each strategy
             # We want to compute the reward and store them to Q
