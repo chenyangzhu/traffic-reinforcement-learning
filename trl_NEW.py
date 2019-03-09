@@ -273,6 +273,9 @@ class Traffic:
 if __name__ == "__main__":
     t = Traffic()
     t.Q_learning()
+    df = pd.DataFrame(t.history)
+    df.to_excel("output.xlsx")
+ 
 
 
    
