@@ -95,7 +95,6 @@ class Juncture():
         In this function we compute how many cars are going out of the system
         注意了，这里要用到self.time和速度矩阵，转移矩阵不需要，直接使用cars_detail即可
         '''
-
         self.out_car_in_detail = np.zeros((4, 4))  # From north to south, etc.
         self.cars -= self.out_car_from  # 减掉那些出去了的车
 

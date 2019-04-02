@@ -44,7 +44,7 @@ class Traffic:
             self.sample_outer_car()
 
             # 选择最佳的strategy，直接调用model文件里的函数，例如Q-learning，SARSA等
-            self.best_strategy = self.pick_strategy()
+            self.best_strategy = self.pick_strategy(self.juncs)
 
             # 这一步执行这个策略
             self.execute()
@@ -92,7 +92,7 @@ class Traffic:
         '''
         在这一个方程，我们通过sampling，得到从系统外进入系统的车辆数。
         注意了只有系统外进入系统的车辆需要进行sample，系统内的车辆来来往往不需要sample
-        系统内的车辆来往在self.execute()里更新。
+        系统内的车辆来往在 self.execute() 里更新。
         需要sample的路口是：A1 A2 A4 B2 C2 C3 C4 D1 D3 D4
         '''
 
