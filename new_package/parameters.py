@@ -1,19 +1,18 @@
 import numpy as np
 
 
-def speed_matrix(flag, id):
+def speed_matrix(id, time):
     '''
     TODO 这里直接和kh的模型进行对接，
     注意要加上不同的15分钟时间段，直接写到V里去即可，
     :param:
-    flag: "morning" or "afternoon"
     id:   "A"/"B"/"C"/"D"
+    time: 以15s为单位，
 
     :return:
     speed matrix with time embedded, the shape is
         number of time periods x 4 x 4
     4x4 is just all directions
-    number of time periods = 早高峰or晚高峰总长 / 15min间隔
     '''
 
     mV_1 = np.array(
@@ -29,14 +28,7 @@ def speed_matrix(flag, id):
         [[6.6174, 7.9762, 6.4442, 7.0779], [7.4318, 4.1769, 7.0859, 8.1752], [6.6421, 7.3496, 5.524, 6.1823],
          [6.6792, 7.8172, 6.2007, 5.6317]])*10000
 
-    morning = {"A": mV_1, "B": mV_2, "C": mV_3, "D": mV_4}
-    afternoon = {"A": mV_1, "B": mV_2, "C": mV_3, "D": mV_4}
-
-    if flag == "morning":
-        return morning[id]
-    if flag == "afternoon":
-        return afternoon[id]
-
+    return
 
 def transition_matrix():
 
@@ -57,3 +49,10 @@ def transition_matrix():
             "B": P_2,
             "C": P_3,
             "D": P_4}
+
+
+def poisson_matrix(id, time):
+
+
+
+    pass
