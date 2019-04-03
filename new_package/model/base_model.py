@@ -3,8 +3,13 @@ from elements import Juncture
 
 
 class Base:
-    def __init__(self):
-        pass
+    def __init__(self,learning_rate=0.01, reward_decay=0.9, e_greedy=0.9):
+        self.actions = action_space  # a list, get actions from Juncture when used
+        self.lr = learning_rate
+        self.gamma = reward_decay
+        self.epsilon = e_greedy 
+        
+        self.q_table = []
 
     def best_strategy(self, state):
         '''
