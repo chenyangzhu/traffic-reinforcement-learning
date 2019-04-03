@@ -1,6 +1,7 @@
 from base_model import Base
 
 class SarsaTable(Base):
+    self.juncs = state.copy()
     def __init__(self,learning_rate = 0.01, reward_decay=0.9,e_greedy = 0.9):
         super(SarsaTable, self).__init__(self, learning_rate , reward_decay,e_greedy)
             
