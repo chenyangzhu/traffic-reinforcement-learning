@@ -43,12 +43,18 @@ class Traffic:
             # 这一步sample进入系统里的车并且更新in_car
             self.sample_outer_car()
 
-            # 选择最佳的strategy，直接调用model文件里的函数，例如Q-learning，SARSA等
             self.best_strategy = self.pick_strategy(self.juncs)
-
-            # 这一步执行这个策略
+            strategy_id = strategy2idx(self.best_strategy, self.action_space) 
+            # 这一步执行这个策略,并返回下一步的状态
             self.execute()
-
+            
+            #下一步的策略
+            strategy_ = self.pick_strategy(self.juncs)
+            strategy_id_ = strategy2idx(strategy_, self.action_space)
+            
+            #更新q表
+            self.model.learn(self.juncs,strategy_id,strategy_id_ )
+            
             # 这一步保存历史
             self.store_history()
 
