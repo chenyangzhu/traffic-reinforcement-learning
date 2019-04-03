@@ -3,13 +3,13 @@ from elements import Juncture
 
 
 class Base:
-    def __init__(self,learning_rate=0.01, reward_decay=0.9, e_greedy=0.9):
+    def __init__(self,learning_rate=0.01, reward_decay=0.9, e_greedy=0.9,action_space):
         self.actions = action_space  # a list, get actions from Juncture when used
         self.lr = learning_rate
         self.gamma = reward_decay
         self.epsilon = e_greedy 
         
-        self.q_table = []
+        self.q_table = np.zeros(len(action_space))
 
     def best_strategy(self, state):
         '''
@@ -31,5 +31,14 @@ class Base:
                     "B": np.zeros((4, 3)),
                     "C": np.zeros((4, 3)),
                     "D": np.zeros((4, 3))}
-
+        action_id = np.argmax(q_table)
+        action = self.actions[action_id]
+        #TO DO 将action 转化为strategy
+        
         return strategy
+    
+    def reward(self, state):
+        '''
+        TO DO 补充reward函数
+        '''
+    
